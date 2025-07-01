@@ -1,0 +1,31 @@
+{
+    "celebrant": {
+        "name": "pawel",
+        "age": 47
+    },
+    "date": "2024-04-17",
+    "location": "dom",
+    "budget": 1000.0,
+    "guests": [
+        {
+            "name": "zuza",
+            "age": 23
+        },
+        {
+            "name": "anto",
+            "age": 1
+        },
+        {
+            "name": "p",
+            "age": 23
+        }
+    ],
+    "tasks": [
+        {
+            "description": "dkvfovnfovowfvwer",
+            "deadline": "2003-1-23",
+            "responsible_person": "zuza",
+            "status": "Not done"
+        }
+    ]
+}

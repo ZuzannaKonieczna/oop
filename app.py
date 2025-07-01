@@ -163,17 +163,28 @@ def load_from_file(filename):
 def main():
     print("=== BIRTHDAY PARTY ORGANIZER ===")
     
-    # Create celebrant
-    print("\nEnter celebrant details:")
-    name = input("Name: ")
-    age = int(input("Age: "))
-    celebrant = Person(name, age)
+    print("1. Load data from file: ")
+    print("2. Create new party")
+    x = int(input("Choose 1-2:"))
+
+    if(x == 1):
+        filename = input("Enter filename to load (e.g., party.json): ")
+        new_party = load_from_file(filename)
+
+    elif(x == 2):
+        # Create celebrant
+        print("\nEnter celebrant details:")
+        name = input("Name: ")
+        age = int(input("Age: "))
+        celebrant = Person(name, age)
     
-    # Create party
-    date = input("Party date (e.g., 2023-12-31): ")
-    location = input("Party location: ")
-    budget = float(input("Party budget (PLN): "))
-    party = BirthdayParty(celebrant, date, location, budget)
+        # Create party
+        date = input("Party date (e.g., 2023-12-31): ")
+        location = input("Party location: ")
+        budget = float(input("Party budget (PLN): "))
+        party = BirthdayParty(celebrant, date, location, budget)
+    else:
+        print("Invalid choice. Please choose option 1-7.")
     
     while True:
         print("\n=== MAIN MENU ===")
@@ -182,10 +193,9 @@ def main():
         print("3. Manage tasks")
         print("4. Party summary")
         print("5. Save data to file")
-        print("6. Load data from file")
-        print("7. Exit program")
+        print("6. Exit program")
         
-        choice = input("Choose option (1-7): ")
+        choice = input("Choose option (1-6): ")
         
         if choice == "1":
             while True:
@@ -340,17 +350,11 @@ def main():
             party.save_to_file(filename)
         
         elif choice == "6":
-            filename = input("Enter filename to load (e.g., party.json): ")
-            new_party = load_from_file(filename)
-            if new_party:
-                party = new_party
-        
-        elif choice == "7":
             print("Closing program...")
             break
         
         else:
-            print("Invalid choice. Please choose option 1-7.")
+            print("Invalid choice. Please choose option 1-6.")
 
 if __name__ == "__main__":
     main()
