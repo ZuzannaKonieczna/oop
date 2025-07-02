@@ -91,7 +91,7 @@ class BirthdayParty:
 
     def show_summary(self):
         print("\n=== PARTY SUMMARY ===")
-        print(f"Celebrant: {self.celebrant}")
+        print(f"BirthdayBoy/BirthdayGirl: {self.celebrant}")
         print(f"Date: {self.date}")
         print(f"Location: {self.location}")
         print(f"Budget: {self.budget} PLN")
@@ -160,8 +160,8 @@ def main():
         if not party:
             return
     elif option == "2":
-        name = input("Celebrant's name: ")
-        age = int(input("Celebrant's age: "))
+        name = input("BirthdayBoy or BirthdayGirl's name: ")
+        age = int(input("BirthdayBoy or BirthdayGirl's age: "))
         celebrant = Person(name, age)
         date = input("Party date (YYYY-MM-DD): ")
         location = input("Location: ")
@@ -208,7 +208,7 @@ def main():
             while True:
                 print("\n-- Gift Menu --")
                 print("1. Add gift")
-                print("2. Show celebrant's gifts")
+                print("2. Show BirthdayBoy or BirthdayGirl's gifts")
                 print("3. Show guest's gifts")
                 print("4. Back")
                 g = input("Option: ")
@@ -221,7 +221,7 @@ def main():
                     if not giver:
                         continue
                     print("Gift recipient:")
-                    print("1. Celebrant")
+                    print("1. BirthdayBoy\Girl")
                     print("2. Guest")
                     r = input("Choose 1 or 2: ")
                     recipient = party.celebrant if r == "1" else choose_person(party.guests)
