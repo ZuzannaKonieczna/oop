@@ -1,0 +1,24 @@
+{
+    "celebrant": {
+        "name": "Zuzia",
+        "age": 19
+    },
+    "date": "2025-10-22",
+    "location": "Park Podolski ",
+    "budget": 100.0,
+    "guests": [
+        {
+            "name": "Hania",
+            "age": 19
+        },
+        {
+            "name": "Oliwia",
+            "age": 20
+        },
+        {
+            "name": "Marcin ",
+            "age": 30
+        }
+    ],
+    "tasks": []
+}

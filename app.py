@@ -165,7 +165,7 @@ def main():
         celebrant = Person(name, age)
         date = input("Party date (YYYY-MM-DD): ")
         location = input("Location: ")
-        budget = float(input("Budget (PLN): "))
+        budget = float(input("Budget for gifts (PLN): "))
         party = BirthdayParty(celebrant, date, location, budget)
     else:
         print("Invalid option.")
