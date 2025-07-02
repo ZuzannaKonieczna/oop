@@ -1,0 +1,45 @@
+{
+    "celebrant": {
+        "name": "Zuzia ",
+        "age": 20
+    },
+    "date": "2025-03-27",
+    "location": "\u0141\u00f3d\u017a",
+    "budget": 1000.0,
+    "guests": [
+        {
+            "name": "Gabrysia ",
+            "age": 19
+        },
+        {
+            "name": "Weronika ",
+            "age": 24
+        },
+        {
+            "name": "Hania ",
+            "age": 17
+        },
+        {
+            "name": "Natalia",
+            "age": 21
+        },
+        {
+            "name": "Oliwia",
+            "age": 20
+        }
+    ],
+    "tasks": [
+        {
+            "description": "Kupno Balon\u00f3w",
+            "deadline": "2025-02-20",
+            "responsible_person": "Weronika ",
+            "status": "Done"
+        },
+        {
+            "description": "Zamowienie tortu",
+            "deadline": "2025-07-20",
+            "responsible_person": "Hania ",
+            "status": "Done"
+        }
+    ]
+}

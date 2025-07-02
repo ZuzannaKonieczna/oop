@@ -235,6 +235,7 @@ def main():
                 elif g == "2":
                     party.celebrant.show_gifts()
                 elif g == "3":
+                    print("Choose wich guest presents you wanna see: ")
                     guest = choose_person(party.guests)
                     if guest:
                         guest.show_gifts()
