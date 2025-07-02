@@ -1,23 +1,22 @@
 import json
-from datetime import datetime
 
 class Person:
     def __init__(self, name, age):
         self.name = name
         self.age = age
-        self.gift_list = []
-    
+        self.gifts = []
+
     def add_gift(self, gift):
-        self.gift_list.append(gift)
-    
+        self.gifts.append(gift)
+
     def show_gifts(self):
-        print(f"\nGifts for {self.name}:")
-        if not self.gift_list:
-            print("No gifts")
+        print(f"\nGifts received by {self.name}:")
+        if not self.gifts:
+            print("No gifts.")
             return
-        for i, g in enumerate(self.gift_list, 1):
-            print(f"{i}. {g.name} (from {g.giver.name}) - {g.price} PLN")
-    
+        for i, gift in enumerate(self.gifts, 1):
+            print(f"{i}. {gift.name} (from {gift.giver.name}) - {gift.price} PLN")
+
     def __str__(self):
         return f"{self.name} ({self.age} years old)"
 
@@ -27,12 +26,6 @@ class Gift:
         self.price = price
         self.giver = giver
         self.recipient = recipient
-    
-    def show_info(self):
-        print(f"\nGift: {self.name}")
-        print(f"Price: {self.price} PLN")
-        print(f"From: {self.giver.name}")
-        print(f"To: {self.recipient.name}")
 
 class Task:
     def __init__(self, description, deadline, responsible_person):
@@ -40,13 +33,13 @@ class Task:
         self.deadline = deadline
         self.responsible_person = responsible_person
         self.status = "Not done"
-    
-    def mark_as_done(self):
+
+    def mark_done(self):
         self.status = "Done"
-        print(f"Task '{self.description}' has been marked as done.")
-    
+        print(f"Task '{self.description}' marked as done.")
+
     def __str__(self):
-        return f"{self.description} (deadline: {self.deadline}, responsible: {self.responsible_person.name}, status: {self.status})"
+        return f"{self.description} (Deadline: {self.deadline}, Responsible: {self.responsible_person.name}, Status: {self.status})"
 
 class BirthdayParty:
     def __init__(self, celebrant, date, location, budget):
@@ -54,307 +47,242 @@ class BirthdayParty:
         self.date = date
         self.location = location
         self.budget = budget
-        self.guest_list = []
-        self.task_list = []
-    
+        self.guests = []
+        self.tasks = []
+
     def add_guest(self, guest):
-        if guest not in self.guest_list:
-            self.guest_list.append(guest)
-            print(f"Added guest: {guest.name}")
+        if guest not in self.guests:
+            self.guests.append(guest)
+            print(f"Guest '{guest.name}' added.")
         else:
-            print(f"{guest.name} is already on the guest list")
-    
+            print(f"{guest.name} is already on the guest list.")
+
     def remove_guest(self, guest):
-        if guest in self.guest_list:
-            self.guest_list.remove(guest)
-            print(f"Removed guest: {guest.name}")
+        if guest in self.guests:
+            self.guests.remove(guest)
+            print(f"Guest '{guest.name}' removed.")
         else:
-            print(f"{guest.name} was not on the guest list")
-    
-    def schedule_task(self, task):
-        self.task_list.append(task)
-        print(f"Added task: {task.description}")
-    
+            print(f"{guest.name} is not on the guest list.")
+
+    def add_task(self, task):
+        self.tasks.append(task)
+        print(f"Task '{task.description}' added.")
+
     def show_tasks(self):
-        print("\nTask list:")
-        if not self.task_list:
-            print("No tasks")
+        print("\nTask List:")
+        if not self.tasks:
+            print("No tasks added.")
             return
-        for i, t in enumerate(self.task_list, 1):
-            print(f"{i}. {t}")
-    
+        for i, task in enumerate(self.tasks, 1):
+            print(f"{i}. {task}")
+
     def show_guests(self):
-        print("\nGuest list:")
-        if not self.guest_list:
-            print("No guests")
+        print("\nGuest List:")
+        if not self.guests:
+            print("No guests added.")
             return
-        for i, g in enumerate(self.guest_list, 1):
-            print(f"{i}. {g}")
-    
-    def calculate_gifts_cost(self):
-        total = sum(g.price for guest in self.guest_list for g in guest.gift_list)
-        print(f"\nTotal value of gifts: {total} PLN")
+        for i, guest in enumerate(self.guests, 1):
+            print(f"{i}. {guest}")
+
+    def total_gift_cost(self):
+        total = sum(gift.price for person in [self.celebrant] + self.guests for gift in person.gifts)
+        print(f"\nTotal value of all gifts: {total} PLN")
         return total
-    
+
     def show_summary(self):
         print("\n=== PARTY SUMMARY ===")
         print(f"Celebrant: {self.celebrant}")
         print(f"Date: {self.date}")
         print(f"Location: {self.location}")
         print(f"Budget: {self.budget} PLN")
-        
         self.show_guests()
         self.show_tasks()
-        
-        gifts_total = self.calculate_gifts_cost()
-        print(f"Remaining budget: {self.budget - gifts_total} PLN")
-    
+        total = self.total_gift_cost()
+        print(f"Remaining budget: {self.budget - total} PLN")
+
     def save_to_file(self, filename):
         data = {
             'celebrant': {'name': self.celebrant.name, 'age': self.celebrant.age},
             'date': self.date,
             'location': self.location,
             'budget': self.budget,
-            'guests': [{'name': g.name, 'age': g.age} for g in self.guest_list],
+            'guests': [{'name': g.name, 'age': g.age} for g in self.guests],
             'tasks': [{
                 'description': t.description,
                 'deadline': t.deadline,
                 'responsible_person': t.responsible_person.name,
                 'status': t.status
-            } for t in self.task_list]
+            } for t in self.tasks]
         }
-        
-        with open(filename, 'w') as file:
-            json.dump(data, file, indent=4)
-        print(f"\nParty data saved to file {filename}")
+        with open(filename, 'w') as f:
+            json.dump(data, f, indent=4)
+        print(f"\nData saved to '{filename}'.")
 
-def load_from_file(filename):
+def load_party(filename):
     try:
-        with open(filename, 'r') as file:
-            data = json.load(file)
-        
+        with open(filename, 'r') as f:
+            data = json.load(f)
+
         celebrant = Person(data['celebrant']['name'], data['celebrant']['age'])
-        party = BirthdayParty(
-            celebrant,
-            data['date'],
-            data['location'],
-            data['budget']
-        )
-        
-        # Adding guests
-        for guest in data['guests']:
-            party.add_guest(Person(guest['name'], guest['age']))
-        
-        # Adding tasks (simplified - assuming responsible persons are among guests)
-        for task in data['tasks']:
-            responsible = next((g for g in party.guest_list if g.name == task['responsible_person']), None)
+        party = BirthdayParty(celebrant, data['date'], data['location'], data['budget'])
+
+        for g in data['guests']:
+            party.add_guest(Person(g['name'], g['age']))
+
+        for t in data['tasks']:
+            responsible = next((g for g in party.guests if g.name == t['responsible_person']), None)
             if responsible:
-                t = Task(task['description'], task['deadline'], responsible)
-                t.status = task['status']
-                party.schedule_task(t)
-        
-        print(f"\nParty data loaded from file {filename}")
+                task = Task(t['description'], t['deadline'], responsible)
+                task.status = t['status']
+                party.add_task(task)
+
+        print(f"\nData loaded from '{filename}'.")
         return party
-    
     except FileNotFoundError:
-        print(f"File {filename} does not exist.")
+        print(f"File '{filename}' not found.")
         return None
+
+def choose_person(people):
+    for i, p in enumerate(people, 1):
+        print(f"{i}. {p}")
+    idx = int(input("Enter number: ")) - 1
+    return people[idx] if 0 <= idx < len(people) else None
 
 def main():
     print("=== BIRTHDAY PARTY ORGANIZER ===")
-    
-    print("1. Load data from file: ")
+    print("1. Load party from file")
     print("2. Create new party")
-    x = int(input("Choose 1-2:"))
+    option = input("Choose 1 or 2: ")
 
-    if(x == 1):
-        filename = input("Enter filename to load (e.g., party.json): ")
-        new_party = load_from_file(filename)
-
-    elif(x == 2):
-        # Create celebrant
-        print("\nEnter celebrant details:")
-        name = input("Name: ")
-        age = int(input("Age: "))
+    if option == "1":
+        file = input("Filename: ")
+        party = load_party(file)
+        if not party:
+            return
+    elif option == "2":
+        name = input("Celebrant's name: ")
+        age = int(input("Celebrant's age: "))
         celebrant = Person(name, age)
-    
-        # Create party
-        date = input("Party date (e.g., 2023-12-31): ")
-        location = input("Party location: ")
-        budget = float(input("Party budget (PLN): "))
+        date = input("Party date (YYYY-MM-DD): ")
+        location = input("Location: ")
+        budget = float(input("Budget (PLN): "))
         party = BirthdayParty(celebrant, date, location, budget)
     else:
-        print("Invalid choice. Please choose option 1-7.")
-    
+        print("Invalid option.")
+        return
+
     while True:
         print("\n=== MAIN MENU ===")
         print("1. Manage guests")
         print("2. Manage gifts")
         print("3. Manage tasks")
-        print("4. Party summary")
-        print("5. Save data to file")
-        print("6. Exit program")
-        
-        choice = input("Choose option (1-6): ")
-        
+        print("4. Show summary")
+        print("5. Save to file")
+        print("6. Exit")
+        choice = input("Choose option: ")
+
         if choice == "1":
             while True:
-                print("\n=== GUEST MANAGEMENT ===")
+                print("\n-- Guest Menu --")
                 print("1. Add guest")
                 print("2. Remove guest")
-                print("3. Show guest list")
-                print("4. Return to main menu")
-                
-                guest_choice = input("Choose option (1-4): ")
-                
-                if guest_choice == "1":
+                print("3. Show guests")
+                print("4. Back")
+                g = input("Option: ")
+                if g == "1":
                     name = input("Guest name: ")
                     age = int(input("Guest age: "))
                     party.add_guest(Person(name, age))
-                
-                elif guest_choice == "2":
+                elif g == "2":
+                    guest = choose_person(party.guests)
+                    if guest:
+                        party.remove_guest(guest)
+                elif g == "3":
                     party.show_guests()
-                    if party.guest_list:
-                        num = int(input("Enter guest number to remove: ")) - 1
-                        if 0 <= num < len(party.guest_list):
-                            party.remove_guest(party.guest_list[num])
-                        else:
-                            print("Invalid guest number")
-                
-                elif guest_choice == "3":
-                    party.show_guests()
-                
-                elif guest_choice == "4":
+                elif g == "4":
                     break
-                
                 else:
-                    print("Invalid choice")
-        
+                    print("Invalid option.")
+
         elif choice == "2":
             while True:
-                print("\n=== GIFT MANAGEMENT ===")
+                print("\n-- Gift Menu --")
                 print("1. Add gift")
                 print("2. Show celebrant's gifts")
-                print("3. Show specific guest's gifts")
-                print("4. Return to main menu")
-                
-                gift_choice = input("Choose option (1-4): ")
-                
-                if gift_choice == "1":
-                    party.show_guests()
-                    if not party.guest_list:
-                        print("Add guests first")
+                print("3. Show guest's gifts")
+                print("4. Back")
+                g = input("Option: ")
+                if g == "1":
+                    if not party.guests:
+                        print("No guests available.")
                         continue
-                    
-                    giver_num = int(input("Enter gift giver's number: ")) - 1
-                    if 0 <= giver_num < len(party.guest_list):
-                        giver = party.guest_list[giver_num]
-                        
-                        print("\nGift recipient:")
-                        print("1. Celebrant")
-                        print("2. Another guest")
-                        recipient_type = input("Choose option (1-2): ")
-                        
-                        if recipient_type == "1":
-                            recipient = party.celebrant
-                        elif recipient_type == "2":
-                            party.show_guests()
-                            recipient_num = int(input("Enter recipient's number: ")) - 1
-                            if 0 <= recipient_num < len(party.guest_list):
-                                recipient = party.guest_list[recipient_num]
-                            else:
-                                print("Invalid guest number")
-                                continue
-                        else:
-                            print("Invalid choice")
-                            continue
-                        
-                        name = input("Gift name: ")
-                        price = float(input("Gift price (PLN): "))
-                        
-                        gift = Gift(name, price, giver, recipient)
-                        recipient.add_gift(gift)
-                        print(f"Added gift: {name}")
-                    
-                    else:
-                        print("Invalid guest number")
-                
-                elif gift_choice == "2":
+                    print("Select gift giver:")
+                    giver = choose_person(party.guests)
+                    if not giver:
+                        continue
+                    print("Gift recipient:")
+                    print("1. Celebrant")
+                    print("2. Guest")
+                    r = input("Choose 1 or 2: ")
+                    recipient = party.celebrant if r == "1" else choose_person(party.guests)
+                    if not recipient:
+                        continue
+                    name = input("Gift name: ")
+                    price = float(input("Gift price (PLN): "))
+                    gift = Gift(name, price, giver, recipient)
+                    recipient.add_gift(gift)
+                    print("Gift added.")
+                elif g == "2":
                     party.celebrant.show_gifts()
-                
-                elif gift_choice == "3":
-                    party.show_guests()
-                    if party.guest_list:
-                        num = int(input("Enter guest number: ")) - 1
-                        if 0 <= num < len(party.guest_list):
-                            party.guest_list[num].show_gifts()
-                        else:
-                            print("Invalid guest number")
-                
-                elif gift_choice == "4":
+                elif g == "3":
+                    guest = choose_person(party.guests)
+                    if guest:
+                        guest.show_gifts()
+                elif g == "4":
                     break
-                
                 else:
-                    print("Invalid choice")
-        
+                    print("Invalid option.")
+
         elif choice == "3":
             while True:
-                print("\n=== TASK MANAGEMENT ===")
+                print("\n-- Task Menu --")
                 print("1. Add task")
                 print("2. Mark task as done")
-                print("3. Show task list")
-                print("4. Return to main menu")
-                
-                task_choice = input("Choose option (1-4): ")
-                
-                if task_choice == "1":
-                    description = input("Task description: ")
-                    deadline = input("Deadline (e.g., 2023-12-31): ")
-                    
-                    party.show_guests()
-                    if not party.guest_list:
-                        print("Add guests first")
-                        continue
-                    
-                    num = int(input("Enter responsible person's number: ")) - 1
-                    if 0 <= num < len(party.guest_list):
-                        responsible = party.guest_list[num]
-                        task = Task(description, deadline, responsible)
-                        party.schedule_task(task)
-                    else:
-                        print("Invalid guest number")
-                
-                elif task_choice == "2":
+                print("3. Show tasks")
+                print("4. Back")
+                t = input("Option: ")
+                if t == "1":
+                    desc = input("Task description: ")
+                    deadline = input("Deadline (YYYY-MM-DD): ")
+                    print("Assign to:")
+                    responsible = choose_person(party.guests)
+                    if responsible:
+                        party.add_task(Task(desc, deadline, responsible))
+                elif t == "2":
                     party.show_tasks()
-                    if party.task_list:
-                        num = int(input("Enter task number to mark: ")) - 1
-                        if 0 <= num < len(party.task_list):
-                            party.task_list[num].mark_as_done()
-                        else:
-                            print("Invalid task number")
-                
-                elif task_choice == "3":
+                    idx = int(input("Task number: ")) - 1
+                    if 0 <= idx < len(party.tasks):
+                        party.tasks[idx].mark_done()
+                elif t == "3":
                     party.show_tasks()
-                
-                elif task_choice == "4":
+                elif t == "4":
                     break
-                
                 else:
-                    print("Invalid choice")
-        
+                    print("Invalid option.")
+
         elif choice == "4":
             party.show_summary()
-        
+
         elif choice == "5":
-            filename = input("Enter filename to save (e.g., party.json): ")
+            filename = input("Filename to save (e.g., party.json): ")
             party.save_to_file(filename)
-        
+
         elif choice == "6":
-            print("Closing program...")
+            print("Goodbye!")
             break
-        
+
         else:
-            print("Invalid choice. Please choose option 1-6.")
+            print("Invalid option.")
 
 if __name__ == "__main__":
     main()
